@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <title>
+            Cookie SameSite Test
+        </title>
+    </head>
+    <body>
+        <!-- Form -->
+        Form <b>(LAX: GET only)</b><br>
+        <form method="GET" action="//cookie.localhost.com:8080/test">
+            <input type="submit" value="GET" />
+        </form>
+        <form method="POST" action="//cookie.localhost.com:8080/test">
+            <input type="submit" value="POST" />
+        </form>
+        ^Check redirect
+        <hr>
+        <!-- Anchor -->
+        Anchor <b>(LAX allowed)</b><br>
+        <a href="//cookie.localhost.com:8080/test">go get</a>
+        ^Check redirect
+        <hr>
+        <!-- Ajax -->
+        Ajax <b>(Always not send cookie)</b><br>
+        <button id="get_button">Get</button>
+        <button id="post_button">Post</button>
+        <br>
+        ^Check the console.log!
+        <hr>
+        <!-- Link -->
+        Link <b>(Always not send cookie)</b><br>
+        <p class="someClass">someCrossSiteCss</p>
+        ^Check the request!
+        <hr>
+        <!-- iframe -->
+        Iframe <b>(Always not send cookie)</b><br>
+        <iframe src="//cookie.localhost.com:8080/test" style="height: 36px;"></iframe><br>
+        ^Check the request!
+        <hr>
+        <!-- Image -->
+        Image <b>(Always not send cookie)</b><br>
+        <img src="//cookie.localhost.com:8080/img" /><br>
+        ^Check the request!
+        <hr>
+    </body>
+    <link rel="stylesheet" href="//cookie.localhost.com:8080/css">
+    <script>
+        function requestHandler() {
+            console.log(this.responseText)
+        }
+
+        function onClickHandler(requestType) {
+            return function(event) {
+                var xhr = new XMLHttpRequest()
+                xhr.addEventListener('load', requestHandler);
+                xhr.open(requestType, "http://cookie.localhost.com:8080/test")
+                xhr.send()
+            }
+        }
+
+        document.getElementById('get_button').onclick = onClickHandler('GET')
+        document.getElementById('post_button').onclick = onClickHandler('POST')
+    </script>
+</html>

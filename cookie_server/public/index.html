@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>
+            Get Cookie here
+        </title>
+    </head>
+    <body>
+        <h2>
+            SetCookie
+        </h2>
+        <a href="/strict">strict</a><br>
+        <a href="/lax">lax</a><br>
+        <a href="/none">none</a><br>
+        <a href="/remove">remove</a>
+        <hr>
+        <h2>
+            First-party context
+        </h2>
+        <button id="get_button">get</button>
+        <button id="post_button">post</button>
+        <p>Cookie from request: %%REQUEST_COOKIE_PLACEHOLDER%%</p>
+    </body>
+    <script>
+        function requestHandler() {
+            console.log(this.responseText)
+        }
+
+        function onClickHandler(requestType) {
+            return function(event) {
+                var xhr = new XMLHttpRequest()
+                xhr.addEventListener('load', requestHandler);
+                xhr.open(requestType, "http://cookie.localhost.com:8080/test")
+                xhr.send()
+            }
+        }
+
+        document.getElementById('get_button').onclick = onClickHandler('GET')
+        document.getElementById('post_button').onclick = onClickHandler('POST')
+    </script>
+</html>
